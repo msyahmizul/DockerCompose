@@ -1,0 +1,3 @@
+#!/bin/bash
+su $USER -c "kopia repository connect filesystem --path $KOPIA_FS_PATH --readonly"
+su $USER  -c "/kopia-scripts/kopia-sync-file-drive-archive"

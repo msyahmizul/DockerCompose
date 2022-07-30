@@ -1,0 +1,5 @@
+#!/bin/bash
+su $USER -c "kopia repository connect filesystem --path $KOPIA_FS_PATH"
+crontab -u $USER /crontab
+su $USER -c "crond -l 0 -S -b"
+su $USER  -c "/kopia-scripts/kopia-server"

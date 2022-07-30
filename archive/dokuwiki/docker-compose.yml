@@ -1,0 +1,26 @@
+version: "3"
+services:
+  dokuwiki:
+    image: ghcr.io/linuxserver/dokuwiki
+    container_name: dokuwiki
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kuala_Lumpur
+    volumes:
+      - /DockerFile/DokuWiki/:/config
+    networks:
+      - web
+    ports:
+      - 8086:80
+    labels:
+      - "traefik.enable=false"
+      - "traefik.http.routers.dokuwiki.entrypoints=https"
+      - "traefik.http.routers.dokuwiki.rule=Host(`wiki.local.cf`)"
+      - "traefik.http.routers.dokuwiki.tls=true"
+      - "traefik.http.services.dokuwiki.loadbalancer.server.port=80"
+      - "traefik.http.routers.dokuwiki.middlewares=authelia@docker"
+networks:
+  web:
+    external: true

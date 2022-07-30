@@ -1,0 +1,10 @@
+#!/bin/bash
+flock -n /tmp/run-sync \
+             kopia repository sync-to rclone \
+             --remote-path file-drive-archive:/ \
+             --must-exist \
+             --parallel=5 \
+             --update \
+             --delete \
+             --rclone-env RCLONE_CONFIG=$RCLONE_CONFIG_LOCATION  \
+             --rclone-env RCLONE_CONFIG_PASS=$RCLONE_CONFIG_PASS \

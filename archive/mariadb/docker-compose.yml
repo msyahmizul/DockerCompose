@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+  db-maria:
+    image: mariadb:latest
+    container_name: mariadb
+    restart: unless-stopped
+    networks:
+      - database
+    environment:
+      MARIADB_ROOT_PASSWORD: jiro
+      MARIADB_USER: jiro
+      MARIADB_PASSWORD: jiroroji
+    # command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
+    volumes:
+      - /DockerFile/Mariadb/:/var/lib/mysql
+  phpmyadmin:
+    image: lscr.io/linuxserver/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kuala_Lumpur
+    volumes:
+      - /DockerFile/PHP-MY-ADMIN:/config
+    depends_on:
+      - db-maria
+    networks:
+      - database
+    ports:
+      - 8083:80
+    environment:
+      PMA_HOST: mariadb
+      PMA_USER: ***
+      PMA_PASSWORD: *
+
+    restart: unless-stopped
+networks:
+  database:
+    external: true

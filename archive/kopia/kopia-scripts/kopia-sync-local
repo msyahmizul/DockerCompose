@@ -1,0 +1,13 @@
+#!/bin/bash
+
+kopia repository sync-to filesystem \
+			--path=/backup \
+			--parallel=5 \
+			--update \
+			--delete
+
+kopia repository sync-to filesystem \
+			--path=/backup2 \
+			--parallel=5 \
+			--update \
+			--delete

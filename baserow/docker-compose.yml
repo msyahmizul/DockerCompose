@@ -1,0 +1,25 @@
+
+version: "3.4"
+services:
+  baserow:
+    container_name: baserow
+    image: baserow/baserow:1.11.0
+    networks:
+      - web
+      - database
+      - redis
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.baserow.entrypoints=http"
+      - "traefik.http.routers.baserow.rule=Host(`table.local.cf`)"
+      - "traefik.http.services.baserow.loadbalancer.server.port=80"
+    env_file: .env
+    volumes:
+      - /DockerFile/Baserow/:/baserow/data
+networks:
+  web:
+    external: true
+  redis:
+    external: true
+  database:
+    external: true

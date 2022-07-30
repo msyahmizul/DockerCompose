@@ -1,0 +1,45 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+  db:
+    image: postgres:alpine
+    container_name: postgres
+    restart: always
+    env_file: .env
+    user: 1000:1000
+    networks: 
+      - database
+    volumes: 
+      - /DockerFile/Postgresql/:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pg-admin
+    restart: always
+    networks:
+      - database
+      - web
+    depends_on: 
+      - db
+    env_file: .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pg-admin.entrypoints=http"
+      - "traefik.http.routers.pg-admin.rule=Host(`pgadmin.s01.local.cf`)"
+      - "traefik.http.services.pg-admin.loadbalancer.server.port=80"
+  pg-backup:
+    image: kartoza/pg-backup:14-3.3
+    networks:
+      - database
+    depends_on:
+      - db
+    volumes:
+      - /DockerFile/PostgresqlBackup/:/backups
+    env_file: .env
+networks: 
+  database:
+    external: true
+  web:
+    external: true

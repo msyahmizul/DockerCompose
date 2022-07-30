@@ -1,0 +1,12 @@
+#!/bin/bash
+
+kopia server start \
+            --tls-cert-file /app/ssl/cert \
+            --tls-key-file /app/ssl/key \
+            --address 0.0.0.0:51515 \
+            --server-control-username admin \
+            --server-control-password jirorji \
+            --server-username admin \
+            --server-password admin \
+            --override-username server@jfrx-server-01 \
+            --log-level debug 

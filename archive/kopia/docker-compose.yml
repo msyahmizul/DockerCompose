@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+  kopia:
+    image: jiro-kopia:latest
+    hostname: jfrx-server-01
+    restart: unless-stopped
+    container_name: kopia
+    ports:
+      - 51515:51515
+    environment:
+      TZ: Asia/Kuala_Lumpur
+      KOPIA_PASSWORD: "%X8CQt$$7&%^&j2HdG6cx54sZ!"
+      KOPIA_FS_PATH: "/backup"
+      KOPIA_PASSWORD: "c7i5sSegpSBY4ctxKA7H59LfXSSwe6"
+      KOPIA_LOG_DIR: "/app/log"
+      KOPIA_CACHE_DIRECTORY: "/app/cache"
+      USER: "jiro"
+      RCLONE_CONFIG_PASS: "Wno5uTqTT8t597J8ygbi7eKZRw84e8"
+      RCLONE_CONFIG_LOCATION: "/rclone.conf"
+    command: /scripts/init-server
+    volumes:
+      # Util file kopia
+      - /mnt/random/misc-kopia:/app
+    
+      # Mount Scripts
+      - ./kopia-scripts:/kopia-scripts
+      - ./scripts:/scripts
+      - ./rclone.conf:/rclone.conf
+      - ./crontab:/crontab
+
+      #  Archive location
+      - /home/jiro/archive/:/backup
+      # - /mnt/grey/archive/:/backup
+      - /mnt/random/archive:/main
+
+
+      # Path to backup file
+      - /DockerCompose:/DockerCompose:ro
+      - /DockerFile:/DockerFile:ro

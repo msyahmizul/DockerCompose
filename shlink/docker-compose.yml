@@ -1,0 +1,23 @@
+version: "3"
+
+
+services:
+  shlink:
+    container_name: shlink
+    image: shlinkio/shlink:stable
+    hostname: jfrx-shlink-s01
+    networks:
+      - web
+      - database
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.shlink.entrypoints=http"
+      - "traefik.http.routers.shlink.rule=Host(`s.local.cf`)"  
+      - "traefik.http.services.shlink.loadbalancer.server.port=8080"
+    env_file: .env
+    restart: unless-stopped
+networks:
+  web:
+    external: true
+  database:
+    external: true
